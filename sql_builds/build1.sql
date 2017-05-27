@@ -1,9 +1,9 @@
 CREATE SCHEMA `ManagerProiecte` ;
 
-CREATE TABLE `ManagerProiecte`.`profesori` (
+CREATE TABLE `ManagerProiecte`.`profesor` (
   `id` INT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(30) NOT NULL,
-  `parola` VARCHAR(30) NOT NULL,
+  `password` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`));
 
-INSERT INTO `ManagerProiecte`.`profesori` (`id`, `username`, `password`) VALUES ('1', 'admin', 'admin');
+INSERT INTO `ManagerProiecte`.`profesor` (`id`, `username`, `password`) VALUES ('1', 'admin', 'admin');
