@@ -81,9 +81,8 @@ public class addStudent extends HttpServlet {
                         Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                RequestDispatcher requestDispatcher; 
-                    requestDispatcher = request.getRequestDispatcher("/admin.jsp");
-                    requestDispatcher.forward(request, response);
+                
+                response.sendRedirect(request.getContextPath() + "/adminProjects");
             } catch (SQLException ex) {
                 Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
