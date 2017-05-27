@@ -6,11 +6,12 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Manager Proiecte</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <div>Bine ati venit!</div>
+        <a href="${pageContext.request.contextPath}/login">Login Profesor</a>
     </body>
 </html>

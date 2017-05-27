@@ -12,5 +12,6 @@ and open the template in the editor.
     </head>
     <body>
         <div>Bine ati venit!</div>
+        <a href="${pageContext.request.contextPath}/login">Login Profesor</a>
     </body>
 </html>
