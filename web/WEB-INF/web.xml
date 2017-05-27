@@ -16,6 +16,10 @@
         <servlet-name>addStudent</servlet-name>
         <servlet-class>admin.addStudent</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>addProject</servlet-name>
+        <servlet-class>admin.addProject</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>testDB</servlet-name>
         <url-pattern>/testDB</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>addStudent</servlet-name>
         <url-pattern>/addStudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>addProject</servlet-name>
+        <url-pattern>/addProject</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
