@@ -60,9 +60,7 @@ public class login extends HttpServlet {
                     HttpSession session = request.getSession();
                     session.setAttribute("UserName", username);
                     
-                    RequestDispatcher requestDispatcher; 
-                    requestDispatcher = request.getRequestDispatcher("/admin.jsp");
-                    requestDispatcher.forward(request, response);
+                    response.sendRedirect(request.getContextPath() + "/adminProjects");
                 } else {
                     RequestDispatcher requestDispatcher; 
                     requestDispatcher = request.getRequestDispatcher("/login.jsp");

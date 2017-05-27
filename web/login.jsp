@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ro">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login Profesor</title>
@@ -18,6 +18,6 @@
          <br />
          Last Name: <input type = "password" name = "password" />
          <input type = "submit" value = "Submit" />
-      </form>
+        </form>
     </body>
 </html>
