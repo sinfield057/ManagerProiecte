@@ -5,12 +5,14 @@
  */
 package admin;
 
+import java.sql.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +42,55 @@ public class addStudent extends HttpServlet {
             String nume = request.getParameter( "nume" );
             String prenume = request.getParameter( "prenume" );
             String email = request.getParameter( "email" );
+            
+            Connection conn = null;
+            String qrySQL = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            
+            try {
+                conn = ds.getConnection();
+                qrySQL = "SELECT * FROM studenti WHERE nume=? AND prenume=? AND email=?";
+                ps = conn.prepareStatement( qrySQL );
+                ps.setString( 1, nume );
+                ps.setString( 2, prenume );
+                ps.setString( 3, email );
+                
+                rs = ps.executeQuery();
+                if ( rs.next() ) {
+                    int newPrezenta = rs.getInt( "prezente" );
+                    rs.updateInt( "prezente", newPrezenta );
+                    rs.updateRow();
+                } else {
+                    rs.moveToInsertRow();
+                    rs.updateString( "nume",nume );
+                    rs.updateString( "prenume", prenume );
+                    rs.updateString( "email", email );
+                    rs.updateInt( "nr_prezente", 1 );
+                    rs.insertRow();
+                }
+                RequestDispatcher requestDispatcher; 
+                    requestDispatcher = request.getRequestDispatcher("/admin.jsp");
+                    requestDispatcher.forward(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try
+                {
+                    if( rs != null )
+                        rs.close();
+
+                    if( ps != null )
+                        ps.close();
+
+                    if( conn != null )
+                        conn.close();
+                }
+                catch (SQLException ex)
+                {
+                    System.out.println("Eroare la închiderea conexiunii cu BD!");
+                }
+            }
         } catch (NamingException ex) {
             Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
