@@ -12,15 +12,6 @@ CREATE TABLE `ManagerProiecte`.`studenti` (
   `prenume` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `nr_prezente` INT NULL,
-  `id_proiect` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_student`));
-
-CREATE TABLE `ManagerProiecte`.`studenti` (
-  `id_student` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nume` VARCHAR(45) NOT NULL,
-  `prenume` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
-  `nr_prezente` INT NULL,
   `id_proiect` INT UNSIGNED NULL,
   PRIMARY KEY (`id_student`),
   INDEX `id_proiect_idx` (`id_proiect` ASC),
