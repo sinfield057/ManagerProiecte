@@ -13,10 +13,11 @@
     </head>
     <body>
         <h1>Login Profesor</h1>
+        <p>Introduceti datele de administrator</p>
         <form action = "${pageContext.request.contextPath}/login" method = "POST">
-         First Name: <input type = "text" name = "username">
+         Username: <input type = "text" name = "username">
          <br />
-         Last Name: <input type = "password" name = "password" />
+         Parola: <input type = "password" name = "password" />
          <input type = "submit" value = "Submit" />
         </form>
     </body>

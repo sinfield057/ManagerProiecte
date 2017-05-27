@@ -11,7 +11,9 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>Bine ati venit!</div>
+        <h1>Bine ati venit!</h1>
         <a href="${pageContext.request.contextPath}/login">Login Profesor</a>
+        <hr/>
+        <a href="${pageContext.request.contextPath}/studentProjects">Continuare ca student</a>
     </body>
 </html>
