@@ -58,16 +58,28 @@ public class addStudent extends HttpServlet {
                 
                 rs = ps.executeQuery();
                 if ( rs.next() ) {
-                    int newPrezenta = rs.getInt( "prezente" );
-                    rs.updateInt( "prezente", newPrezenta );
-                    rs.updateRow();
+                    int newPrezenta = rs.getInt( "nr_prezente" ) + 1;
+                    try ( Connection conn2 = ds.getConnection() ) {
+                        String updSQL = "update studenti set nr_prezente = ? where email = ?";
+                        PreparedStatement ps2 = conn2.prepareStatement( updSQL );
+                        ps2.setString( 2, email );
+                        ps2.setInt( 1, newPrezenta );
+                        ps2.executeUpdate();
+                    } catch ( SQLException ex ) {
+                        Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } else {
-                    rs.moveToInsertRow();
-                    rs.updateString( "nume",nume );
-                    rs.updateString( "prenume", prenume );
-                    rs.updateString( "email", email );
-                    rs.updateInt( "nr_prezente", 1 );
-                    rs.insertRow();
+                    try ( Connection conn2 = ds.getConnection() ) {
+                        String updSQL = "insert into studenti (nume, prenume, email, nr_prezente) values( ?, ?, ?, ? )";
+                        PreparedStatement ps2 = conn2.prepareStatement( updSQL );
+                        ps2.setString( 1, nume);
+                        ps2.setString( 2, prenume );
+                        ps2.setString( 3, email );
+                        ps2.setInt( 4, 1 );
+                        ps2.executeUpdate();
+                    } catch ( SQLException ex ) {
+                        Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 RequestDispatcher requestDispatcher; 
                     requestDispatcher = request.getRequestDispatcher("/admin.jsp");
