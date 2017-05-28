@@ -39,6 +39,13 @@ public class addProject extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        if (request.getSession().getAttribute("UserName") == null) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+            requestDispatcher.forward(request, response);
+            
+            return;
+        }
 
         try {
             response.setContentType("text/html;charset=UTF-8");

@@ -10,16 +10,28 @@ package common;
  * @author ovidiugiorgi
  */
 public class ProjectDetails {
+    private int id_proiect;
     private String titlu;
     private String descriere;
     private int nr_max_studenti;
     private int nr_echipe;
     
-    public ProjectDetails(String titlu, String descriere, int nr_max_studenti, int nr_echipe) {
+    public ProjectDetails(
+            int id_proiect, String titlu, String descriere,
+            int nr_max_studenti, int nr_echipe) {
+        this.id_proiect = id_proiect;
         this.titlu = titlu;
         this.descriere = descriere;
         this.nr_max_studenti = nr_max_studenti;
         this.nr_echipe = nr_echipe;
+    }
+    
+    public int getIdProiect() {
+        return this.id_proiect;
+    }
+    
+    public void setIdProiect(int id_proiect) {
+        this.id_proiect = id_proiect;
     }
     
     public String getTitlu() {

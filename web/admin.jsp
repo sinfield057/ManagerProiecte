@@ -46,6 +46,7 @@
          <h2>Lista proiecte</h2>
          <table style="width: 100%">
              <tr>
+                 <th>Id proiect</th>
                  <th>Titlu</th>
                  <th>Descriere</th>
                  <th>Nr. max studenti / echipa</th>
@@ -56,6 +57,7 @@
              for (ProjectDetails project : projects) {
                 %>
                 <tr>
+                    <td><%= project.getIdProiect() %></td>
                     <td><%= project.getTitlu() %></td>
                     <td><%= project.getDescriere() %></td>
                     <td><%= project.getNrMaxStudenti() %></td>

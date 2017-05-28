@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -43,6 +44,13 @@ public class adminProjects extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        if (request.getSession().getAttribute("UserName") == null) {
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
+            requestDispatcher.forward(request, response);
+            
+            return;
+        }
+        
         try {
             response.setContentType("text/html;charset=UTF-8");
             DataSource ds = ( DataSource ) new InitialContext().lookup("java:/comp/env/jdbc/ManagerProiecte");
@@ -54,9 +62,9 @@ public class adminProjects extends HttpServlet {
             try {
                 conn = ds.getConnection();
                 String qrySQL =
-                        "select titlu, descriere, nr_max_studenti, count(ech.id_proiect) \"nr_echipe\"\n" +
+                        "select id_proiect, titlu, descriere, nr_max_studenti, count(ech.id_proiect) \"nr_echipe\"\n" +
                         "from proiecte left join echipa ech using(id_proiect)\n" +
-                        "group by titlu, descriere, nr_max_studenti";
+                        "group by id_proiect, titlu, descriere, nr_max_studenti";
                 ps = conn.prepareStatement( qrySQL );
                 
                 rs = ps.executeQuery();
@@ -65,6 +73,7 @@ public class adminProjects extends HttpServlet {
                 
                 while (rs.next()) {
                     ProjectDetails projectDetails = new ProjectDetails(
+                        rs.getInt("id_proiect"),
                         rs.getString("titlu"),
                         rs.getString("descriere"),
                         rs.getInt("nr_max_studenti"),
