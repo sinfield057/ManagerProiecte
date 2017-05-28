@@ -60,7 +60,7 @@ public class addProject extends HttpServlet {
                 ps.setInt( 3, nr_max_studenti );
                 ps.executeUpdate();
             } catch ( SQLException ex ) {
-                        Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     if( rs != null )
@@ -76,7 +76,7 @@ public class addProject extends HttpServlet {
                 }
             }
         } catch (NamingException ex) {
-            Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin.jsp");

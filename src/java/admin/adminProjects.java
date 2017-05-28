@@ -5,13 +5,24 @@
  */
 package admin;
 
+import common.ProjectDetails;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
 /**
  *
@@ -31,6 +42,55 @@ public class adminProjects extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            DataSource ds = ( DataSource ) new InitialContext().lookup("java:/comp/env/jdbc/ManagerProiecte");
+            
+            Connection conn = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            
+            try {
+                conn = ds.getConnection();
+                String qrySQL = "SELECT * FROM proiecte";
+                ps = conn.prepareStatement( qrySQL );
+                
+                rs = ps.executeQuery();
+                
+                ArrayList<ProjectDetails> projects = new ArrayList<>();
+                
+                while (rs.next()) {
+                    ProjectDetails projectDetails = new ProjectDetails(
+                        rs.getString("titlu"),
+                        rs.getString("descriere"),
+                        rs.getInt("nr_max_studenti")
+                    );
+                    
+                    projects.add(projectDetails);
+                }
+                
+                request.setAttribute("projects", projects);
+                //TODO: Why doesn't the jsp receive data from this servlet?
+            } catch ( SQLException ex ) {
+                Logger.getLogger(adminProjects.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if( rs != null )
+                        rs.close();
+
+                    if( ps != null )
+                        ps.close();
+
+                    if( conn != null )
+                        conn.close();
+                } catch (SQLException ex) {
+                    System.out.println("Eroare la închiderea conexiunii cu BD!");
+                }
+            }
+        } catch (NamingException ex) {
+            Logger.getLogger(adminProjects.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin.jsp");
         requestDispatcher.forward(request, response);

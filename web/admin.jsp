@@ -4,6 +4,8 @@
     Author     : ovidiugiorgi
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="common.ProjectDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ro">
@@ -36,5 +38,9 @@
          Nr. maxim studenti / echipa <input type = "text" name = "nr_max_studenti" />
          <input type = "submit" value = "Submit" />
          </form>
+         
+         <hr/>
+         
+         <h2>Lista proiecte</h2>
     </body>
 </html>
