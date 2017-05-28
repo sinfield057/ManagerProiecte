@@ -20,6 +20,10 @@
         <servlet-name>addProject</servlet-name>
         <servlet-class>admin.addProject</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>projectInfo</servlet-name>
+        <servlet-class>admin.projectInfo</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>testDB</servlet-name>
         <url-pattern>/testDB</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>addProject</servlet-name>
         <url-pattern>/addProject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>projectInfo</servlet-name>
+        <url-pattern>/projectInfo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
