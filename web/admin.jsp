@@ -7,10 +7,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="common.ProjectDetails"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ro">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link type="text/css" rel="stylesheet" href="<c:url value="/style.css" />" />
         <title>Administrare Proiecte</title>
     </head>
     <body>
@@ -42,7 +44,12 @@
          <hr/>
          
          <h2>Lista proiecte</h2>
-         <table>
+         <table style="width: 100%">
+             <tr>
+                 <th>Titlu</th>
+                 <th>Descriere</th>
+                 <th>Nr. echipe</th>
+             </tr>
          <% ArrayList<ProjectDetails> projects = (ArrayList<ProjectDetails>)request.getAttribute("projects"); %>
          <% if (projects != null) {
              for (ProjectDetails project : projects) {
@@ -50,9 +57,10 @@
                 <tr>
                     <td><%= project.getTitlu() %></td>
                     <td><%= project.getDescriere() %></td>
+                    <td><%= project.getNrEchipe() %></td>
                 </tr><%
              }
-           } 
+           }
         %>
          </table>
     </body>

@@ -64,7 +64,8 @@ public class adminProjects extends HttpServlet {
                     ProjectDetails projectDetails = new ProjectDetails(
                         rs.getString("titlu"),
                         rs.getString("descriere"),
-                        rs.getInt("nr_max_studenti")
+                        rs.getInt("nr_max_studenti"),
+                        0
                     );
                     
                     projects.add(projectDetails);
