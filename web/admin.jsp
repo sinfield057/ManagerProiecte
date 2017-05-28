@@ -57,8 +57,8 @@
              for (ProjectDetails project : projects) {
                 %>
                 <tr>
-                    <td><%= project.getIdProiect() %></td>
-                    <td><%= project.getTitlu() %></td>
+                    <td><a href="${pageContext.request.contextPath}/projectInfo.jsp?id_proiect=<%= project.getIdProiect() %>"><%= project.getIdProiect() %></td>
+                    <td><a href="${pageContext.request.contextPath}/projectInfo.jsp?id_proiect=<%= project.getIdProiect() %>"><%= project.getTitlu() %></td>
                     <td><%= project.getDescriere() %></td>
                     <td><%= project.getNrMaxStudenti() %></td>
                     <td><%= project.getNrEchipe() %></td>
