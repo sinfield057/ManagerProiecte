@@ -48,7 +48,8 @@
              <tr>
                  <th>Titlu</th>
                  <th>Descriere</th>
-                 <th>Nr. echipe</th>
+                 <th>Nr. max studenti / echipa</th>
+                 <th>Nr. echipe inscrise</th>
              </tr>
          <% ArrayList<ProjectDetails> projects = (ArrayList<ProjectDetails>)request.getAttribute("projects"); %>
          <% if (projects != null) {
@@ -57,6 +58,7 @@
                 <tr>
                     <td><%= project.getTitlu() %></td>
                     <td><%= project.getDescriere() %></td>
+                    <td><%= project.getNrMaxStudenti() %></td>
                     <td><%= project.getNrEchipe() %></td>
                 </tr><%
              }

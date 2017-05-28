@@ -53,7 +53,10 @@ public class adminProjects extends HttpServlet {
             
             try {
                 conn = ds.getConnection();
-                String qrySQL = "SELECT * FROM proiecte";
+                String qrySQL =
+                        "select titlu, descriere, nr_max_studenti, count(ech.id_proiect) \"nr_echipe\"\n" +
+                        "from proiecte left join echipa ech using(id_proiect)\n" +
+                        "group by titlu, descriere, nr_max_studenti";
                 ps = conn.prepareStatement( qrySQL );
                 
                 rs = ps.executeQuery();
@@ -65,7 +68,7 @@ public class adminProjects extends HttpServlet {
                         rs.getString("titlu"),
                         rs.getString("descriere"),
                         rs.getInt("nr_max_studenti"),
-                        0
+                        rs.getInt("nr_echipe")
                     );
                     
                     projects.add(projectDetails);
