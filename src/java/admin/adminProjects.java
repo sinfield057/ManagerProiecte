@@ -71,7 +71,6 @@ public class adminProjects extends HttpServlet {
                 }
                 
                 request.setAttribute("projects", projects);
-                //TODO: Why doesn't the jsp receive data from this servlet?
             } catch ( SQLException ex ) {
                 Logger.getLogger(adminProjects.class.getName()).log(Level.SEVERE, null, ex);
             } finally {

@@ -42,5 +42,18 @@
          <hr/>
          
          <h2>Lista proiecte</h2>
+         <table>
+         <% ArrayList<ProjectDetails> projects = (ArrayList<ProjectDetails>)request.getAttribute("projects"); %>
+         <% if (projects != null) {
+             for (ProjectDetails project : projects) {
+                %>
+                <tr>
+                    <td><%= project.getTitlu() %></td>
+                    <td><%= project.getDescriere() %></td>
+                </tr><%
+             }
+           } 
+        %>
+         </table>
     </body>
 </html>

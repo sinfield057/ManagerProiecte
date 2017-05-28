@@ -81,8 +81,6 @@ public class addStudent extends HttpServlet {
                         Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                
-                response.sendRedirect(request.getContextPath() + "/adminProjects");
             } catch (SQLException ex) {
                 Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
@@ -104,6 +102,8 @@ public class addStudent extends HttpServlet {
             }
         } catch (NamingException ex) {
             Logger.getLogger(addStudent.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            response.sendRedirect(request.getContextPath() + "/adminProjects");
         }
     }
 

@@ -45,42 +45,49 @@ public class addProject extends HttpServlet {
             DataSource ds = ( DataSource ) new InitialContext().lookup("java:/comp/env/jdbc/ManagerProiecte");
             String titlu = request.getParameter("titlu");
             String descriere = request.getParameter("descriere");
-            int nr_max_studenti = Integer.parseInt(request.getParameter("nr_max_studenti"));
-            
-            Connection conn = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
+            int nr_max_studenti = 0;
             
             try {
-                conn = ds.getConnection();
-                String updSQL = "insert into proiecte (titlu, descriere, nr_max_studenti) values(?, ?, ?)";
-                ps = conn.prepareStatement( updSQL );
-                ps.setString( 1, titlu);
-                ps.setString( 2, descriere );
-                ps.setInt( 3, nr_max_studenti );
-                ps.executeUpdate();
-            } catch ( SQLException ex ) {
-                Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
+                nr_max_studenti = Integer.parseInt(request.getParameter("nr_max_studenti"));
+                Connection conn = null;
+                PreparedStatement ps = null;
+                ResultSet rs = null;
+
                 try {
-                    if( rs != null )
-                        rs.close();
+                    conn = ds.getConnection();
+                    String updSQL = "insert into proiecte (titlu, descriere, nr_max_studenti) values(?, ?, ?)";
+                    ps = conn.prepareStatement( updSQL );
+                    ps.setString( 1, titlu);
+                    ps.setString( 2, descriere );
+                    ps.setInt( 3, nr_max_studenti );
+                    ps.executeUpdate();
 
-                    if( ps != null )
-                        ps.close();
+                } catch ( SQLException ex ) {
+                    Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        if( rs != null )
+                            rs.close();
 
-                    if( conn != null )
-                        conn.close();
-                } catch (SQLException ex) {
-                    System.out.println("Eroare la închiderea conexiunii cu BD!");
+                        if( ps != null )
+                            ps.close();
+
+                        if( conn != null )
+                            conn.close();
+                    } catch (SQLException ex) {
+                        System.out.println("Eroare la închiderea conexiunii cu BD!");
+                    }
                 }
             }
+            catch (NumberFormatException ex) {
+                Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } catch (NamingException ex) {
             Logger.getLogger(addProject.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            response.sendRedirect(request.getContextPath() + "/adminProjects");
         }
-        
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin.jsp");
-        requestDispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
