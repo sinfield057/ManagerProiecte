@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 
 /**
  *
@@ -49,7 +50,9 @@ public class studentProjects extends HttpServlet {
             
             try {
                 conn = ds.getConnection();
-                String qrySQL = "SELECT * FROM proiecte";
+                String qrySQL =  "select id_proiect, titlu, descriere, nr_max_studenti, count(ech.id_proiect) \"nr_echipe\"\n" +
+                                 "from proiecte left join echipa ech using(id_proiect)\n" +
+                                 "group by id_proiect, titlu, descriere, nr_max_studenti";
                 ps = conn.prepareStatement( qrySQL );
                 
                 rs = ps.executeQuery();
@@ -58,9 +61,11 @@ public class studentProjects extends HttpServlet {
                 
                 while ( rs.next() ) {
                     ProjectDetails projectDetails = new ProjectDetails(
-                        rs.getString( "titlu" ),
-                        rs.getString( "descriere" ),
-                        rs.getInt( "nr_max_studenti" )
+                        rs.getInt("id_proiect"),
+                        rs.getString("titlu"),
+                        rs.getString("descriere"),
+                        rs.getInt("nr_max_studenti"),
+                        rs.getInt("nr_echipe")
                     );
                     
                     projects.add( projectDetails );
@@ -86,6 +91,8 @@ public class studentProjects extends HttpServlet {
         } catch (NamingException ex) {
             Logger.getLogger(studentProjects.class.getName()).log(Level.SEVERE, null, ex);
         }
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/student.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
