@@ -32,6 +32,10 @@
         <servlet-name>addTeam</servlet-name>
         <servlet-class>student.addTeam</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>teamStatus</servlet-name>
+        <servlet-class>student.teamStatus</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>testDB</servlet-name>
         <url-pattern>/testDB</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>addTeam</servlet-name>
         <url-pattern>/addTeam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>teamStatus</servlet-name>
+        <url-pattern>/teamStatus</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
