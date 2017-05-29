@@ -5,9 +5,9 @@
  */
 package admin;
 
-import common.ProjectDetails;
+import common.Student;
+import common.Team;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,14 +22,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
  *
  * @author ovidiugiorgi
  */
-public class adminProjects extends HttpServlet {
+public class projectInfo extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,38 +53,89 @@ public class adminProjects extends HttpServlet {
         try {
             response.setContentType("text/html;charset=UTF-8");
             DataSource ds = ( DataSource ) new InitialContext().lookup("java:/comp/env/jdbc/ManagerProiecte");
+            int id_proiect = Integer.parseInt(request.getParameter("id_proiect"));
             
             Connection conn = null;
             PreparedStatement ps = null;
             ResultSet rs = null;
-            
+
             try {
                 conn = ds.getConnection();
-                String qrySQL =
-                        "select id_proiect, titlu, descriere, nr_max_studenti, count(ech.id_proiect) \"nr_echipe\"\n" +
-                        "from proiecte left join echipa ech using(id_proiect)\n" +
-                        "group by id_proiect, titlu, descriere, nr_max_studenti";
-                ps = conn.prepareStatement( qrySQL );
+                String qrySQL = 
+                        "select nume, prenume, email, nr_prezente\n" +
+                        "from studenti\n" +
+                        "where id_echipa in (\n" +
+                        "    select id_echipa\n" +
+                        "    from echipa\n" +
+                        "    where id_proiect = ?\n" +
+                        ")";
                 
+                ps = conn.prepareStatement( qrySQL );
+                ps.setInt(1, id_proiect);
                 rs = ps.executeQuery();
                 
-                ArrayList<ProjectDetails> projects = new ArrayList<>();
+                PreparedStatement ps2 = null;
+                ResultSet rs2 = null;
                 
-                while (rs.next()) {
-                    ProjectDetails projectDetails = new ProjectDetails(
-                        rs.getInt("id_proiect"),
-                        rs.getString("titlu"),
-                        rs.getString("descriere"),
-                        rs.getInt("nr_max_studenti"),
-                        rs.getInt("nr_echipe")
-                    );
+                try {
+                    qrySQL =
+                        "select count(*) \"membri_echipa\"\n" +
+                        "from studenti\n" +
+                        "where id_echipa = (\n" +
+                        "    select id_echipa\n" +
+                        "    from echipa\n" +
+                        "    where id_proiect = ?\n" +
+                        "    limit 1\n" +
+                        ")";
                     
-                    projects.add(projectDetails);
+                    ps2 = conn.prepareStatement(qrySQL);
+                    ps2.setInt(1, id_proiect);
+                    rs2 = ps2.executeQuery();
+                    
+                    ArrayList<Student> students = new ArrayList<>();
+                    ArrayList<Team> echipe = new ArrayList<>();
+                    
+                    int membri_prima_echipa = rs2.next() ? rs2.getInt("membri_echipa") : Integer.MAX_VALUE;
+                    
+                    while (rs.next()) {
+                        if (rs.getRow() > membri_prima_echipa) {
+                            if (students.size() > 0) {
+                                echipe.add(new Team(students));
+                                students.clear();
+                                membri_prima_echipa = Integer.MAX_VALUE;
+                            }
+                        }
+                        
+                        students.add(new Student(
+                                rs.getString("nume"),
+                                rs.getString("prenume"),
+                                rs.getString("email"),
+                                rs.getInt("nr_prezente")
+                        ));
+                    }
+                    
+                    if (students.size() > 0) {
+                        echipe.add(new Team(students));
+                        students.clear();
+                    }
+                    
+                    request.setAttribute("echipe", echipe);
+                    
+                    RequestDispatcher requestDispatcher = request.getRequestDispatcher("/projectInfo.jsp");
+                    requestDispatcher.forward(request, response);
+                } catch (SQLException ex) {
+                    Logger.getLogger(projectInfo.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    if (rs2 != null) {
+                        rs2.close();
+                    }
+                    
+                    if (ps2 != null) {
+                        ps2.close();
+                    }
                 }
-                
-                request.setAttribute("projects", projects);
             } catch ( SQLException ex ) {
-                Logger.getLogger(adminProjects.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(projectInfo.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     if( rs != null )
@@ -101,11 +151,10 @@ public class adminProjects extends HttpServlet {
                 }
             }
         } catch (NamingException ex) {
-            Logger.getLogger(adminProjects.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(projectInfo.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            response.sendRedirect(request.getContextPath() + "/adminProjects");
         }
-        
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/admin.jsp");
-        requestDispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
