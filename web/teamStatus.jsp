@@ -23,6 +23,8 @@
                <p> <%= apendNew %> </p>
            </div>
            <%}%>
+        <%} else {%>
+        <h2> Acest email nu este inregistrat in nicio echipa sau nu exista </h2> 
         <%}%>
     </body>
 </html>
